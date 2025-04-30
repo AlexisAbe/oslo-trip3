@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const itinerary = [
   {
@@ -8,7 +8,7 @@ const itinerary = [
       {
         time: "22h30",
         title: "Arrivée à Oslo Gardermoen",
-        link: "https://goo.gl/maps/NnQrp2fGUdN2",
+        link: "https://www.google.com/maps/place/Oslo+Airport,+Gardermoen",
       },
       {
         time: "22h50",
@@ -18,12 +18,12 @@ const itinerary = [
       {
         time: "23h10",
         title: "Marche jusqu’au logement - Møllergata 42B",
-        link: "https://goo.gl/maps/tK2LWSkxBwsEYQZy6",
+        link: "https://www.google.com/maps/place/Møllergata+42B,+0179+Oslo",
       },
       {
         time: "23h30",
         title: "Verre ou dîner rapide - Torggata Botaniske ou Illegal Burger",
-        link: "https://goo.gl/maps/QpVmbvZBG5g1PL1G9",
+        link: "https://www.google.com/maps/place/Torggata+Botaniske",
       },
     ],
   },
@@ -34,37 +34,37 @@ const itinerary = [
       {
         time: "9h00",
         title: "Petit-déj chez Fuglen",
-        link: "https://goo.gl/maps/FaBkVApXx6zAwEXx6",
+        link: "https://www.google.com/maps/place/Fuglen+Oslo",
       },
       {
         time: "10h00",
         title: "Opéra d’Oslo + promenade dans Barcode",
-        link: "https://goo.gl/maps/nQXXMC5rAJkTzWvQ7",
+        link: "https://www.google.com/maps/place/Oslo+Opera+House",
       },
       {
         time: "12h30",
         title: "Déjeuner chez Vaaghals",
-        link: "https://goo.gl/maps/tZrDZz6iM2U2",
+        link: "https://www.google.com/maps/place/Vaaghals",
       },
       {
         time: "14h00",
         title: "Visite du musée MUNCH",
-        link: "https://goo.gl/maps/3qezkLccwJw1Pd8b9",
+        link: "https://www.google.com/maps/place/MUNCH",
       },
       {
         time: "17h30",
         title: "Pause détente à Sørenga Sjøbad",
-        link: "https://goo.gl/maps/2ogHHnsfqexKy5sf8",
+        link: "https://www.google.com/maps/place/Sørenga+Sjøbad",
       },
       {
         time: "19h00",
         title: "Dîner chez Arakataka",
-        link: "https://goo.gl/maps/Fi6uL6LdQWoRcpRW7",
+        link: "https://www.google.com/maps/place/Arakataka",
       },
       {
         time: "21h00",
         title: "Bar Blå ou Andre til Høyre",
-        link: "https://goo.gl/maps/cV86F2j9JoS1PJG99",
+        link: "https://www.google.com/maps/place/Blå",
       },
     ],
   },
@@ -75,27 +75,27 @@ const itinerary = [
       {
         time: "9h00",
         title: "Tram pour Vigeland Park",
-        link: "https://goo.gl/maps/XrD9pKNvPBRtNuE16",
+        link: "https://www.google.com/maps/place/Vigeland+Park",
       },
       {
         time: "10h00",
         title: "Balade dans le parc + Café Vigeland",
-        link: "https://goo.gl/maps/mKkCJvK5kB22",
+        link: "https://www.google.com/maps/place/Vigeland+Museum+Café",
       },
       {
         time: "12h30",
         title: "Déjeuner à Mathallen Oslo",
-        link: "https://goo.gl/maps/S2mu94FKnmnYmd2Y9",
+        link: "https://www.google.com/maps/place/Mathallen+Oslo",
       },
       {
         time: "14h30",
         title: "Balade à Grünerløkka, street art + Åpent Bakeri",
-        link: "https://goo.gl/maps/k2XmRhWYLPm",
+        link: "https://www.google.com/maps/place/Åpent+Bakeri",
       },
       {
         time: "19h00",
         title: "Dîner au Benjamin Bar & Bistro",
-        link: "https://goo.gl/maps/ef8yYoiknDRYbGJW9",
+        link: "https://www.google.com/maps/place/Benjamin+Bar+%26+Bistro",
       },
     ],
   },
@@ -106,7 +106,7 @@ const itinerary = [
       {
         time: "8h15",
         title: "Départ du logement et trajet vers Oslo S",
-        link: "https://goo.gl/maps/ru4zRoDKxJU2",
+        link: "https://www.google.com/maps/place/Oslo+Central+Station",
       },
       {
         time: "8h40",
@@ -134,6 +134,7 @@ const checklist = [
 export default function App() {
   const [dayIndex, setDayIndex] = useState(0);
   const [isDark, setIsDark] = useState(false);
+  const pdfRef = useRef();
   const day = itinerary[dayIndex];
 
   useEffect(() => {
@@ -141,8 +142,13 @@ export default function App() {
     setIsDark(hour < 7 || hour >= 20);
   }, []);
 
+  const downloadPDF = () => {
+    window.print();
+  };
+
   return (
     <div
+      ref={pdfRef}
       style={{
         padding: "20px",
         fontFamily: "sans-serif",
@@ -177,18 +183,14 @@ export default function App() {
               href={step.link}
               target="_blank"
               rel="noopener noreferrer"
-              style={{
-                display: "inline-block",
-                marginTop: "0.5rem",
-                color: isDark ? "#8ab4f8" : "#0070f3",
-                textDecoration: "underline",
-              }}
+              style={{ display: "inline-block", marginTop: "0.5rem", color: isDark ? "#8ab4f8" : "#0070f3", textDecoration: "underline" }}
             >
               Ouvrir dans Google Maps
             </a>
           </li>
         ))}
       </ul>
+
       <div style={{ display: "flex", justifyContent: "space-between", marginTop: "1rem" }}>
         <button onClick={() => setDayIndex(dayIndex - 1)} disabled={dayIndex === 0}>
           ⬅️ Jour précédent
@@ -205,6 +207,12 @@ export default function App() {
             <li key={idx} style={{ marginTop: "0.3rem" }}>✅ {item}</li>
           ))}
         </ul>
+      </div>
+
+      <div style={{ marginTop: "3rem" }}>
+        <button onClick={downloadPDF} style={{ padding: "0.8rem 1.5rem", marginTop: "1rem" }}>
+          📄 Exporter en PDF
+        </button>
       </div>
     </div>
   );
