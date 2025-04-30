@@ -1,0 +1,15 @@
+{
+  "short_name": "Oslo Trip",
+  "name": "Oslo Weekend Trip Planner",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ]
+}
